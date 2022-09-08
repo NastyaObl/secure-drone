@@ -1,0 +1,20 @@
+@startuml
+
+
+rectangle Drone
+rectangle Mobile
+rectangle "Control center" as cc
+rectangle "\t\t\t\t\t\tMessage bus\t\t\t\t\t\t\t" as kafka
+rectangle "Security monitor" as monitor
+
+:User: ---> Drone: включает питание и \nполучает информацию о текущем состоянии дрона \n(через REST запросы)
+:User: ---> Mobile: управляет дроном \n(отправляет на задание и возвращает его), \nа также получает информацию о полете \nи состоянии дрона
+:User: ---> cc: добавляет задание в пул
+
+Drone -down-> kafka
+Mobile -down-> kafka
+cc -down-> kafka
+monitor -up-> kafka
+
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+
+participant Drone as "Дрон"
+
+participant Mobile as "МП"
+participant CC as "УЦ"
+
+Mobile -> Drone: запуск для работы
+Drone -> CC: запрос задания
+CC --> Mobile
+note over CC #red
+Дрону 
+не отправлено 
+задание
+end note
+
+
+@enduml

@@ -1,7 +1,7 @@
 @startuml
 
  
-(Manager) -down-> (Verifier): запрос на верификацию
+(Manager) -down-> (Verifier): зqапрос на верификацию
 (Verifier) <- (Storage): чтение данных из\nхранилища для проверки
 (Verifier) -down-> (SM): позитивный вердикт
 

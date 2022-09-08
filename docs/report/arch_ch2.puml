@@ -1,0 +1,37 @@
+@startuml
+
+participant Drone as "Дрон"
+
+participant Mobile as "МП"
+participant CC as "УЦ"
+actor "Оператор УЦ" as u_cc
+
+==До начала выполнения==
+u_cc -[#green]>Drone: пубикация открытого ключа
+u_cc -[#green]>Mobile: пубикация открытого ключа
+==Выполнение==
+
+u_cc -> CC: добавили подписанные задания в пул
+
+note over CC #red
+Подделанные задания
+не подписаны
+end note
+Mobile -> Drone: запуск для работы
+Drone -> CC: запрос задания
+CC --[#red]> Drone: неверное или небезопасное задание
+CC --[#red]> Mobile: неверное или небезопасное задание
+Drone -[#green]> Drone: проверили подпись задания
+note over Drone #green
+Подделанные задания
+не выполняются
+end note
+Mobile -[#green]> Mobile: проверили подпись задания
+note over Mobile #green
+Подделанные задания
+игнорируются
+end note
+
+
+
+@enduml

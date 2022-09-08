@@ -1,0 +1,26 @@
+@startuml
+
+participant Drone as "Дрон"
+participant Mobile as "МП"
+
+participant CC as "УЦ"
+actor "Оператор УЦ" as u_cc
+
+u_cc -> CC: добавили задания в пул
+Mobile -> Drone: запуск для работы
+Drone -> CC: запрос задания
+CC --> Drone
+CC--> Mobile
+
+Drone -> Drone++: работает 
+Mobile -[#red]> CC: неверное сообщение об инциденте
+Drone -> Mobile: сообщение о завершении
+Drone -> CC--: сообщение о завершении
+note over CC #red
+противоречивые данные
+end note
+Drone -> Drone: возвращение домой
+
+
+
+@enduml

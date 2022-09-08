@@ -1,0 +1,22 @@
+@startuml
+
+participant Drone as "Дрон"
+participant Mobile as "МП"
+
+participant CC as "УЦ"
+
+Mobile -> Drone: запуск для работы
+note over Drone #red
+дрон не готов лететь
+end note
+Drone -> CC: запрос задания
+CC --> Drone
+CC--> Mobile
+
+Drone -> Drone++: работает (алгоритм работы далее)
+Drone -[#green]> Drone: выявление ошибки
+Drone -> Mobile: сообщение об аварийном завершении
+Drone -> Drone--: возвращение домой
+
+
+@enduml

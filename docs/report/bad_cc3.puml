@@ -1,0 +1,28 @@
+@startuml
+
+participant Drone as "Дрон"
+
+participant Mobile as "МП"
+participant CC as "УЦ"
+
+Mobile -> Drone: запуск для работы
+Drone -> CC: запрос задания
+CC --> Drone
+note over CC #red
+Мобильному приложению 
+не отправлено задание
+end note
+Drone -> Drone: проверили задание
+
+Drone -> Drone++: работает 
+
+Drone -> Mobile: сообщение о завершении
+note over Mobile #red
+Противоречивые 
+данные
+end note
+Drone -> CC--: сообщение о завершении
+Drone -> Drone: возвращение домой
+
+
+@enduml

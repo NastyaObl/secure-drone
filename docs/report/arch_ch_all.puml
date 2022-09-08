@@ -1,0 +1,57 @@
+@startuml
+
+actor "Табло дрона" as u_drone
+participant Drone as "Дрон"
+
+participant Mobile as "МП"
+participant CC as "УЦ"
+actor "Оператор МБ" as u_mobile
+actor "Оператор УЦ" as u_cc
+
+==До начала выполнения==
+u_cc -[#green]>Drone: пубикация открытого ключа
+u_cc -[#green]>Mobile: пубикация открытого ключа
+==Выполнение==
+
+u_drone -> Drone: включение питания
+u_cc -[#green]> CC: добавили подписанные задания в пул
+CC -> CC: проверили и распределили задания
+u_mobile -> Mobile: доступ по PIN
+Mobile -> Drone: запуск для работы
+Drone -> CC: запрос задания
+CC --> Drone
+CC--> Mobile
+Drone -[#green]> Drone: проверили подпись задания
+Mobile -[#green]> Mobile: проверили подпись задания
+Drone -> Drone: проверили задание на безопасность
+alt Ошибка задания
+Drone -> Mobile: оповещение об ошибке
+Mobile -> CC: оповещение об ошибке
+end
+
+Drone -> Drone++: работает (алгоритм работы далее)
+Mobile -> Drone: запрос статуса
+Drone --> Mobile
+
+Drone -> Mobile: сообщение о завершении
+Drone -> CC--: сообщение о завершении
+CC -[#green]> CC: проверка состояния заданий
+Drone -> Drone: возвращение домой
+alt
+Drone -> Drone++: работает (алгоритм работы далее)
+Drone -> Drone: проблема безопасности
+
+Drone -> Mobile: сообщение об аварийном завершении
+Drone -> CC: сообщение о аварийном завершении
+Drone -> Drone--: возвращение домой
+end
+alt
+Drone -> Drone++: работает (алгоритм работы далее)
+Mobile -> Drone: принудительное завершение
+Drone -> Mobile: сообщение об принудительном завершении
+Drone -> CC: сообщение о принудительном завершении
+Drone -> Drone--: возвращение домой
+end
+
+
+@enduml

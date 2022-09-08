@@ -1,0 +1,57 @@
+@startuml
+
+participant Home as "База"
+participant Start as "Начало поля"
+participant End as "Конец поля"
+entity Mobile as "МП"
+
+
+Home -> Start: двигаемся в точку старта
+alt села батарейка
+Home ->x Start
+Start x--> Home
+end
+alt GPS не работает
+Home ->x Start
+Start x--> Home
+end
+alt DoS-атаки
+Home ->x Start
+Start x--> Home
+end
+alt принудительное возвращение
+Mobile [#red]--> Home
+Home ->x Start
+Start x--> Home
+end
+Start --> Mobile: оповещение
+
+Start -> End: начинаем обрабатывать поле
+End -> Start
+Start -> End
+End -> Start
+Start -> End
+End -> Start
+Start -> End
+End --> Mobile: оповещение
+End -> Home: задание выполнено
+
+alt обнаружен человек
+Start -> End: начинаем обрабатывать поле
+End -> Start
+Start -> End
+End ->x Start
+End -> Home: задание прервано
+end
+alt села батарейка и прочие аварийные и принудительные завершения
+Start -> End: начинаем обрабатывать поле
+End -> Start
+Start -> End
+End ->x Start
+End -> Home: задание прервано
+end
+
+
+
+
+@enduml

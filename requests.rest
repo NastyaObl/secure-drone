@@ -1,25 +1,86 @@
-### application
-
-GET http://localhost:5000/ HTTP/1.1
-
-
-### manager
-
-POST http://localhost:6000/update HTTP/1.1
+### turn on drone (physical)
+POST http://localhost:1234/turn_on HTTP/1.1
 content-type: application/json
 auth: very-secure-token
 
 {
-    "url":"http://file_server:6001/download-update/app-update.zip", 
-    "target": "app", 
-    "digest": "68b7d62551d332e395d2c302fc654d45cf836d576da628a06805d19113a89fea", 
-    "digest_alg": "sha256"
+    "charge":"100"
 }
 
 
-### get update digest
-GET http://localhost:6001/get-digest/app-update.zip HTTP/1.1
+### drone status
 
-### get archived update file
-GET http://localhost:6001/download-update/app-update.zip HTTP/1.1
+GET http://localhost:1234/status HTTP/1.1
+
+### drone status from mobile
+
+POST http://localhost:9876/drone_status HTTP/1.1
+content-type: application/json
+auth: very-secure-token
+
+{
+    "PIN":"1234",
+    "drone_password": "password"
+}
+
+### drone to home
+
+POST http://localhost:9876/drone_to_home HTTP/1.1
+content-type: application/json
+auth: very-secure-token
+
+{
+    "PIN":"1234",
+    "drone_password": "password"
+}
+
+### mobile make drone worked (turn on by mobile). PIN to mobile
+
+POST http://localhost:9876/drone_work HTTP/1.1
+content-type: application/json
+auth: very-secure-token
+
+{
+    "PIN":"1234",
+    "drone_password": "password"
+}
+
+### add task to control center
+
+POST http://localhost:5050/add_task HTTP/1.1
+content-type: application/json
+auth: very-secure-token
+
+{
+    "X_start":"7",
+    "Y_start":"8",
+    "Z_start":"3",
+    "X_end":"9000",
+    "Y_end":"9",
+    "Z_end":"6",
+    "sign": "IvanovII"
+}
+
+
+
+### bad task
+POST http://localhost:5050/add_task HTTP/1.1
+content-type: application/json
+auth: very-secure-token
+
+{
+    "X_start":"10",
+    "Y_start":"",
+    "Z_start":"",
+    "X_end":"po",
+    "Y_end":"",
+    "Z_end":""
+}
+
+### cheat request for bad GPS
+GET http://localhost:1234/bad_GPS HTTP/1.1
+
+### log about incident
+
+GET http://localhost:5050/incident_info HTTP/1.1
 

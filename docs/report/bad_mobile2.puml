@@ -1,0 +1,23 @@
+@startuml
+
+participant Drone as "Дрон"
+participant Mobile as "МП"
+participant CC as "УЦ"
+
+Mobile -> Drone: запуск для работы
+Drone -> CC: запрос задания
+CC --> Drone
+CC--> Mobile
+
+Drone -> Drone++: работает 
+Mobile -[#red]> Drone: принудительное завершение (нелегитимное)
+Drone -> Mobile: сообщение об принудительном завершении
+note over CC #red
+данные о невыполненном
+задании не отправлены
+end note
+Drone -> Drone--: возвращение домой
+
+
+
+@enduml

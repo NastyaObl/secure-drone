@@ -1,3 +1,4 @@
+id_list = []
 def check_operation(id, details):
     authorized = False
     # print(f"[debug] checking policies for event {id}, details: {details}")
@@ -39,6 +40,42 @@ def check_operation(id, details):
         authorized = True
     if src == 'storage' and dst == 'updater' \
         and operation == 'blob_content':
-        authorized = True    
+        authorized = True 
+
+    if src == 'drone' and dst == 'mobile' \
+        and operation == 'info':
+        authorized = True  
+    if src == 'mobile' and dst == 'drone' \
+        and operation == 'drone_start':
+        authorized = True   
+    if src == 'drone' and dst == 'control_center' \
+        and operation == 'task_request':
+        authorized = True   
+    if src == 'control_center' and dst == 'drone' \
+        and operation == 'task_response':
+        authorized = True   
+        id_list.append(details['id'])       #делаем как бы statefull соединение
+    if src == 'control_center' and dst == 'mobile' \
+        and operation == 'task_info':
+        authorized = True   
+    if src == 'drone' and dst == 'mobile' \
+        and operation == 'job_error':
+        authorized = True  
+    if src == 'drone' and dst == 'control_center' \
+        and operation == 'job_error' and details['id'] in id_list:
+        authorized = True 
+    if src == 'mobile' and dst == 'drone' \
+        and operation == 'status_request':
+        authorized = True   
+    if src == 'drone' and dst == 'mobile' \
+        and operation == 'status_response':
+        authorized = True   
+    if src == 'mobile' and dst == 'drone' \
+        and operation == 'drone_to_home':
+        authorized = True 
+    if src == 'drone' and dst == 'control_center' \
+        and operation == 'task_completed':
+        authorized = True 
+        
     
     return authorized

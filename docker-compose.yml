@@ -26,26 +26,6 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  app_with_updater:
-    image: app_with_updater
-    build:
-      context: .
-      dockerfile: ./Dockerfile.app_with_updater
-    depends_on:
-      - broker
-    ports:
-      - "5000:5000"
-
-  file_server:
-    image: file_server
-    build:
-      context: .
-      dockerfile: ./Dockerfile.file_server    
-    volumes:
-      - ./file_server/data/:/file_server/data
-    ports:
-      - "6001:6001"
-
   monitor:
     image: monitor
     build:
@@ -54,43 +34,35 @@ services:
     depends_on:
       - broker
 
-  downloader:
-    image: downloader
+  drone:
+    image: drone
     build:
       context: .
-      dockerfile: ./Dockerfile.downloader    
-    depends_on:
-      - file_server
-      - broker
-
-  storage:
-    image: storage
-    build:
-      context: .
-      dockerfile: ./Dockerfile.storage
-    depends_on:
-      - broker
-
-  verifier:
-    image: verifier
-    build:
-      context: .
-      dockerfile: ./Dockerfile.verifier
-    depends_on:
-      - broker
-      - storage
-
-  manager:
-    image: manager
-    build:
-      context: .
-      dockerfile: ./Dockerfile.manager
+      dockerfile: ./Dockerfile.drone
     depends_on:
       - broker      
       - monitor
-      - downloader
-      - verifier
-      - storage
-      - app_with_updater
     ports:
-      - "6000:6000"
+      - "1234:1234"
+
+  mobile:
+    image: mobile
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mobile
+    depends_on:
+      - broker      
+      - monitor
+    ports:
+      - "9876:9876"
+
+  control_center:
+    image: control_center
+    build:
+      context: .
+      dockerfile: ./Dockerfile.control_center
+    depends_on:
+      - broker      
+      - monitor
+    ports:
+      - "5050:5050"

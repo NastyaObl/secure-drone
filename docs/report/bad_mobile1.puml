@@ -1,0 +1,25 @@
+@startuml
+
+participant Drone as "Дрон"
+participant Mobile as "МП"
+
+participant CC as "УЦ"
+actor "Оператор УЦ" as u_cc
+
+u_cc -> CC: добавили задания в пул
+Mobile -> Drone: запуск для работы
+Drone -> CC: запрос задания
+CC --> Drone
+CC--> Mobile
+
+Drone -> Drone++: работает (алгоритм работы далее)
+Drone -> Drone: проблема безопасности или принудительное завершение
+Drone -> Mobile: сообщение об аварийном завершении
+note over Mobile #red
+не отправил информацию
+об ошибке упр.центру
+end note
+Drone -> Drone--: возвращение домой
+
+
+@enduml
